@@ -10,7 +10,7 @@
   },
   "scripts": {
     "sort": "node sort-functions.js",
-    "sort-font": "node sort-functions.js examples/fontExample01.json"
+    "rename": "node rename-function.js"
   },
   "dependencies": {},
   "devDependencies": {
