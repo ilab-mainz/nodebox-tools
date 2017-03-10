@@ -1,0 +1,19 @@
+{
+  "name": "nodebox-tools",
+  "version": "0.0.1",
+  "author": "@bitcraftlab",
+  "license": "MIT",
+  "description": "some helper functions for nodebox.live project files",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitcraftlab/nodebox-tools.git"
+  },
+  "scripts": {
+    "sort": "node sort-functions.js",
+    "sort-font": "node sort-functions.js examples/fontExample01.json"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "prettyjson": "^1.2.1"
+  }
+}
