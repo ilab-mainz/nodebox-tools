@@ -26,6 +26,14 @@ if(argc === 3) {
 var fin = path.resolve(argv[0]);
 var json = require(fin);
 
+// rename node starting with a function name
+function renameNode(name, oldName, newName, logInfo) {
+  if(name.startsWith(oldName)) {
+    name = newName + name.substring(oldName.length);
+    console.log(logInfo, oldName, newName);
+  }
+  return name;
+}
 
 // change function name in the definition
 for(var i = 0; i < json.functions.length; i++) {
@@ -36,19 +44,37 @@ for(var i = 0; i < json.functions.length; i++) {
 
 // change function name in function calls
 for(var i = 0; i < json.functions.length; i++) {
-  var nodes = json.functions[i].nodes;
-  for(var j = 0; j < nodes.length; j++) {
-    // check if the function matches the "projectname.oldname" pattern
-    parts = nodes[j].fn.split('.');
-    if(parts.length === 2 && parts[0] === project && parts[1] === oldName) {
-      // rename the function
-      nodes[j].fn = project + "." + newName;
-      // rename the node if it starts with the old function name (leave it alone otherwise)
-      if(nodes[j].name.startsWith(oldName)) {
-        nodes[j].name = newName + nodes[j].name.substring(oldName.length)
+  var type = json.functions[i].type;
+
+  if(type === 'network') {
+
+    // get function
+    var fn = json.functions[i];
+    var nodes = fn.nodes;
+    var connections = fn.connections;
+
+    // update node labels
+    for(var j = 0; j < nodes.length; j++) {
+      // check if the function matches the "projectname.oldname" pattern
+      parts = nodes[j].fn.split('.');
+      if(parts.length === 2 && parts[0] === project && parts[1] === oldName) {
+        // rename the function
+        nodes[j].fn = project + "." + newName;
+        // rename the node if it starts with the old function name (leave it alone otherwise)
+        nodes[j].name = renameNode(nodes[j].name, oldName, newName, "Rename node");
+        // update connection labels
       }
     }
+
+    // update connection labels
+    for(var j = 0; j < connections.length; j++) {
+      var con = connections[j];
+      if(con.input) con.input = renameNode(connections[j].input, oldName, newName, "Rename input");
+      if(con.output) con.output = renameNode(connections[j].output, oldName, newName, "Rename output");
+    }
+
   }
+
 }
 
 // write to stdout
