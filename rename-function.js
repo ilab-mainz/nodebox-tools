@@ -44,12 +44,14 @@ for(var i = 0; i < json.functions.length; i++) {
 
 // change function name in function calls
 for(var i = 0; i < json.functions.length; i++) {
-  var type = json.functions[i].type;
 
+  var fn = json.functions[i];
+  var type = fn.type;
+
+  // update network functions
   if(type === 'network') {
-
     // get function
-    var fn = json.functions[i];
+
     var nodes = fn.nodes;
     var connections = fn.connections;
 
@@ -73,6 +75,12 @@ for(var i = 0; i < json.functions.length; i++) {
       if(con.output) con.output = renameNode(connections[j].output, oldName, newName, "Rename output");
     }
 
+  }
+
+  // update code functions
+  if(type === 'code') {
+     // substitute all occurences of "projectname.oldname" in the source code
+     fn.source.replace(project + "." + oldName, project + "." + newName);
   }
 
 }
