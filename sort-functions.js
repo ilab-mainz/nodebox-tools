@@ -39,8 +39,12 @@ if(argc === 2) {
 
 }
 
-// sort functions by name
+// sort functions by name, pushing main functions to the top
 json.functions = json.functions.sort(function(a, b) {
+  var amain = a.name.startsWith('main');
+  var bmain = b.name.startsWith('main');
+  if(amain && !bmain) return -1;
+  if(bmain && !amain) return +1;
   return a.name < b.name ? -1 : a.name > b.name ? +1 : 0;
 });
 
