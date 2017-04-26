@@ -12,7 +12,10 @@
     "sort": "node sort-functions.js",
     "rename": "node rename-function.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "async": "^2.3.0",
+    "request": "^2.81.0"
+  },
   "devDependencies": {
     "prettyjson": "^1.2.1"
   }
